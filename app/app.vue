@@ -23,18 +23,15 @@ useHead({
   ],
 });
 
-const title = "Nuxt Starter Template";
+const title = "开发者工具箱";
 const description =
-  "A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours.";
+  "JSON 格式化, Base64 编解码!, 正则表达式测试, JWT 解析, 时间戳转换, UUID 生成, Mock 数据生成, 图标浏览";
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: "https://ui.nuxt.com/assets/templates/nuxt/starter-light.png",
-  twitterImage: "https://ui.nuxt.com/assets/templates/nuxt/starter-light.png",
-  twitterCard: "summary_large_image",
 });
 </script>
 
