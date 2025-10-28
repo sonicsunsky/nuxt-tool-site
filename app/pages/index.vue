@@ -25,5 +25,31 @@ const tools = [
     desc: "快速生成随机数据",
   },
   { name: "图标浏览", path: "/tools/icon-browser", desc: "在线预览常用图标" },
+  { name: "CURL 构建", path: "/tools/curl-builder", desc: "构建 CURL 请求" },
+  {
+    name: "二维码生成",
+    path: "/tools/qr-generator",
+    desc: "生成可下载二维码图片",
+  },
+  {
+    name: "颜色取值与转换",
+    path: "/tools/color-converter",
+    desc: "颜色选择、Hex/RGB/HSL 相互转换",
+  },
+  {
+    name: "密码生成",
+    path: "/tools/password-generator",
+    desc: "自定义密码生成",
+  },
+  {
+    name: "URL 编码/解码",
+    path: "/tools/urlcode",
+    desc: "URL 编码与解码",
+  },
+  {
+    name: "文本对比",
+    path: "/tools/diff",
+    desc: "对比两段文本差异",
+  },
 ];
 </script>

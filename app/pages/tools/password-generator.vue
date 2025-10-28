@@ -1,0 +1,130 @@
+<template>
+  <ToolLayout>
+    <h2 class="text-lg font-bold mb-4">密码生成器</h2>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="font-medium">长度</label>
+        <input
+          type="number"
+          v-model.number="length"
+          min="4"
+          max="128"
+          class="w-24 border p-2 rounded mt-1"
+        />
+
+        <div class="mt-3 space-y-2">
+          <label
+            ><input type="checkbox" v-model="useUpper" /> 包含大写字母
+            (A-Z)</label
+          >
+          <label
+            ><input type="checkbox" v-model="useLower" /> 包含小写字母
+            (a-z)</label
+          >
+          <label
+            ><input type="checkbox" v-model="useNumbers" /> 包含数字
+            (0-9)</label
+          >
+          <label
+            ><input type="checkbox" v-model="useSymbols" /> 包含符号
+            (!@#$...)</label
+          >
+        </div>
+
+        <div class="mt-4 flex gap-2">
+          <button
+            @click="generate"
+            class="bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            生成
+          </button>
+          <button
+            @click="copyOne"
+            class="bg-green-600 text-white px-4 py-2 rounded"
+            :disabled="!pw"
+          >
+            复制
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <label class="font-medium">生成结果</label>
+        <textarea
+          readonly
+          :value="pw"
+          rows="4"
+          class="w-full border p-2 rounded mt-1"
+        />
+        <div class="mt-4">
+          <button @click="generateBatch" class="border px-3 py-1 rounded">
+            批量生成 10 个
+          </button>
+        </div>
+
+        <pre
+          v-if="batch.length"
+          class="mt-3 bg-gray-50 p-3 rounded h-60 overflow-auto text-sm"
+          >{{ batch.join("\n") }}</pre
+        >
+      </div>
+    </div>
+  </ToolLayout>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+
+const length = ref(16);
+const useUpper = ref(true);
+const useLower = ref(true);
+const useNumbers = ref(true);
+const useSymbols = ref(false);
+
+const pw = ref("");
+const batch = ref<string[]>([]);
+
+const SYMBOLS = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+
+function generate() {
+  const pools: string[] = [];
+  if (useUpper.value) pools.push("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  if (useLower.value) pools.push("abcdefghijklmnopqrstuvwxyz");
+  if (useNumbers.value) pools.push("0123456789");
+  if (useSymbols.value) pools.push(SYMBOLS);
+
+  if (!pools.length) {
+    alert("请至少选择一个字符集");
+    return;
+  }
+
+  // 确保每类至少出现一个字符（更安全）
+  const mandatory: string[] = pools.map(
+    (p) => p[Math.floor(Math.random() * p.length)]
+  );
+  let chars = mandatory.join("");
+  const all = pools.join("");
+
+  for (let i = chars.length; i < length.value; i++) {
+    chars += all[Math.floor(Math.random() * all.length)];
+  }
+  // 打乱
+  pw.value = chars
+    .split("")
+    .sort(() => Math.random() - 0.5)
+    .join("");
+}
+
+function copyOne() {
+  if (!pw.value) return;
+  navigator.clipboard.writeText(pw.value).then(() => alert("已复制"));
+}
+
+function generateBatch() {
+  batch.value = Array.from({ length: 10 }).map(() => {
+    generate();
+    return pw.value;
+  });
+}
+</script>
