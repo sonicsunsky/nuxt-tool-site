@@ -6,18 +6,38 @@
     <div class="diff-area">
       <div class="text-column">
         <h3>原始文本</h3>
-        <textarea v-model="text1" placeholder="输入第一段文本..." />
+        <UTextarea
+          v-model="text1"
+          :rows="12"
+          autoresize
+          placeholder="输入第一段文本..."
+        />
       </div>
 
       <div class="text-column">
         <h3>对比文本</h3>
-        <textarea v-model="text2" placeholder="输入第二段文本..." />
+        <UTextarea
+          v-model="text2"
+          :rows="12"
+          autoresize
+          placeholder="输入第二段文本..."
+        />
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn" @click="doDiff">开始对比</button>
-      <button class="btn secondary" @click="reset">清空</button>
+      <UButton size="xl" color="primary" class="btn" @click="doDiff"
+        >开始对比</UButton
+      >
+
+      <UButton
+        size="xl"
+        color="neutral"
+        variant="soft"
+        class="btn"
+        @click="reset"
+        >清空</UButton
+      >
     </div>
 
     <div v-if="diffHtml" class="diff-result" v-html="diffHtml"></div>
@@ -99,26 +119,12 @@ textarea {
   margin: 1.2rem 0;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
 }
 
 .btn {
-  background: #2563eb;
-  color: #fff;
-  border: none;
   padding: 0.6rem 1.4rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn:hover {
-  background: #1e40af;
-}
-
-.btn.secondary {
-  background: #f3f4f6;
-  color: #333;
 }
 
 .diff-result {

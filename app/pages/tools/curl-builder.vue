@@ -1,5 +1,5 @@
 <template>
-  <ToolLayout>
+  <div>
     <h2 class="text-lg font-bold mb-4">cURL / HTTP 请求构建器</h2>
 
     <div class="grid md:grid-cols-2 gap-4">
@@ -86,7 +86,7 @@
         </div>
       </div>
     </div>
-  </ToolLayout>
+  </div>
 </template>
 
 <script setup lang="ts">

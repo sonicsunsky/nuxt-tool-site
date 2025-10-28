@@ -1,5 +1,5 @@
 <template>
-  <ToolLayout>
+  <div>
     <h2 class="text-lg font-bold mb-4">颜色转换器（Hex ↔ RGB ↔ HSL）</h2>
 
     <div class="grid md:grid-cols-2 gap-4">
@@ -46,7 +46,7 @@
         <div class="mt-3 text-sm text-gray-600">颜色预览</div>
       </div>
     </div>
-  </ToolLayout>
+  </div>
 </template>
 
 <script setup lang="ts">

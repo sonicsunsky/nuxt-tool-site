@@ -3,7 +3,9 @@
     <header
       class="p-6 max-w-5xl w-full mx-auto mb-6 flex items-center justify-between"
     >
-      <h1 class="text-2xl font-bold">🧰 开发者工具箱</h1>
+      <h1 class="text-2xl font-bold">
+        <NuxtLink to="/"> 🧰 开发者工具箱 </NuxtLink>
+      </h1>
       <nav class="flex gap-4 text-blue-600">
         <NuxtLink to="/">首页</NuxtLink>
         <NuxtLink to="/tools/json-formatter">JSON格式化</NuxtLink>

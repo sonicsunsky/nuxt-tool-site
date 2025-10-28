@@ -1,5 +1,5 @@
 <template>
-  <ToolLayout>
+  <div>
     <h2 class="text-lg font-bold mb-4">密码生成器</h2>
 
     <div class="grid md:grid-cols-2 gap-4">
@@ -33,34 +33,47 @@
         </div>
 
         <div class="mt-4 flex gap-2">
-          <button
+          <UButton
+            color="secondary"
+            size="xl"
             @click="generate"
-            class="bg-blue-600 text-white px-4 py-2 rounded"
+            class="px-4 py-2 rounded"
           >
             生成
-          </button>
-          <button
+          </UButton>
+
+          <UButton
+            color="primary"
+            size="xl"
             @click="copyOne"
-            class="bg-green-600 text-white px-4 py-2 rounded"
+            class="px-4 py-2 rounded"
             :disabled="!pw"
           >
             复制
-          </button>
+          </UButton>
         </div>
       </div>
 
       <div>
         <label class="font-medium">生成结果</label>
-        <textarea
+        <UTextarea
           readonly
-          :value="pw"
-          rows="4"
-          class="w-full border p-2 rounded mt-1"
-        />
+          v-model="pw"
+          :rows="4"
+          class="w-full p-2 rounded mt-1"
+        >
+        </UTextarea>
+
         <div class="mt-4">
-          <button @click="generateBatch" class="border px-3 py-1 rounded">
+          <UButton
+            color="neutral"
+            variant="outline"
+            size="xl"
+            @click="generateBatch"
+            class="px-3 py-1 rounded"
+          >
             批量生成 10 个
-          </button>
+          </UButton>
         </div>
 
         <pre
@@ -70,7 +83,7 @@
         >
       </div>
     </div>
-  </ToolLayout>
+  </div>
 </template>
 
 <script setup lang="ts">

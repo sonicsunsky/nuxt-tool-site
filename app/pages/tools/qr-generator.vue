@@ -1,5 +1,5 @@
 <template>
-  <ToolLayout>
+  <div>
     <h2 class="text-lg font-bold mb-4">QR 码生成器</h2>
 
     <div class="grid md:grid-cols-2 gap-4">
@@ -72,7 +72,7 @@
         <div v-else class="text-sm text-gray-500">生成的二维码将显示在这里</div>
       </div>
     </div>
-  </ToolLayout>
+  </div>
 </template>
 
 <script setup lang="ts">

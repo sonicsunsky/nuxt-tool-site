@@ -3,28 +3,39 @@
     <h2 class="text-lg font-bold mb-4">UUID 生成</h2>
 
     <div class="flex gap-3">
-      <button
+      <UButton
+        color="primary"
+        size="xl"
         @click="generate"
-        class="bg-blue-600 text-white px-4 py-2 rounded"
+        class="px-4 py-2 rounded"
       >
         生成 UUID
-      </button>
-      <button @click="copy" class="bg-gray-600 text-white px-4 py-2 rounded">
+      </UButton>
+
+      <UButton
+        color="neutral"
+        size="xl"
+        @click="copy"
+        class="px-4 py-2 rounded"
+      >
         复制
-      </button>
+      </UButton>
     </div>
 
     <pre class="bg-gray-100 p-4 mt-4 rounded text-sm">{{ uuid }}</pre>
 
     <div class="mt-6 grid grid-cols-2 gap-3">
-      <button
+      <UButton
+        color="neutral"
+        size="xl"
+        variant="outline"
         v-for="i in 5"
         :key="i"
         @click="generateBatch(i)"
-        class="border p-2 rounded hover:bg-gray-100"
+        class="border p-2 rounded"
       >
         批量生成 {{ i * 10 }} 个
-      </button>
+      </UButton>
     </div>
 
     <pre
