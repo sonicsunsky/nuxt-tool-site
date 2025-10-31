@@ -6,12 +6,12 @@
       <div>
         <label class="font-medium">长度</label>
 
-        <input
+        <UInput
           type="number"
           v-model.number="length"
-          min="4"
-          max="128"
-          class="w-24 border p-2 rounded mt-1"
+          :min="4"
+          :max="128"
+          class="w-32 p-2 rounded mt-1"
         />
 
         <div class="mt-3 space-y-2">
