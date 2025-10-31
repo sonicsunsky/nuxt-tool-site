@@ -6,37 +6,39 @@
       <div>
         <label class="font-medium">选择颜色 / 输入 Hex</label>
         <div class="flex items-center gap-3 mt-2">
-          <input
-            type="color"
-            v-model="hex"
-            class="h-10 w-12 p-0 border rounded"
-          />
-          <input
+          <UInput type="color" v-model="hex" class="h-10 w-12 p-0 rounded" />
+          <UInput
             v-model="hex"
             @input="onHexInput"
             placeholder="#1a73e8"
-            class="border p-2 rounded w-40"
+            class="p-2 rounded w-40"
           />
-          <button
-            @click="copyHex"
-            class="bg-gray-700 text-white px-3 py-1 rounded"
-          >
+          <UButton color="neutral" @click="copyHex" class="px-3 py-1 rounded">
             复制 Hex
-          </button>
+          </UButton>
         </div>
 
         <div class="mt-4 space-y-2 text-sm">
           <div>
             RGB: <strong>{{ rgbStr }}</strong>
-            <button @click="copy(rgbStr)" class="ml-2 text-xs underline">
+            <UButton
+              variant="soft"
+              @click="copy(rgbStr)"
+              class="ml-2 text-xs underline"
+            >
               复制
-            </button>
+            </UButton>
           </div>
+
           <div>
             HSL: <strong>{{ hslStr }}</strong>
-            <button @click="copy(hslStr)" class="ml-2 text-xs underline">
+            <UButton
+              variant="soft"
+              @click="copy(hslStr)"
+              class="ml-2 text-xs underline"
+            >
               复制
-            </button>
+            </UButton>
           </div>
         </div>
       </div>

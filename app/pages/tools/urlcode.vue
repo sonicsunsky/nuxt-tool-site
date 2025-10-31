@@ -3,23 +3,39 @@
     <h1 class="tool-title">🔗 URL 编解码工具</h1>
     <p class="tool-desc">支持 encodeURIComponent / decodeURIComponent 编解码</p>
 
-    <textarea
+    <UTextarea
       v-model="input"
       placeholder="请输入要编码或解码的内容..."
       class="url-input"
-    ></textarea>
+    ></UTextarea>
 
     <div class="actions">
-      <button class="btn" @click="encode">编码 (Encode)</button>
-      <button class="btn" @click="decode">解码 (Decode)</button>
-      <button class="btn secondary" @click="reset">清空</button>
+      <UButton color="secondary" size="xl" @click="encode" class="btn">
+        编码 (Encode)
+      </UButton>
+
+      <UButton color="secondary" size="xl" @click="decode" class="btn">
+        解码 (Decode)
+      </UButton>
+
+      <UButton
+        color="neutral"
+        variant="soft"
+        size="xl"
+        @click="reset"
+        class="btn secondary"
+      >
+        清空
+      </UButton>
     </div>
 
     <div v-if="result" class="result-area">
       <h3>结果</h3>
       <div class="result-box">
         <pre>{{ result }}</pre>
-        <button class="copy-btn" @click="copy(result)">复制</button>
+        <UButton color="info" size="sm" class="copy-btn" @click="copy(result)">
+          复制
+        </UButton>
       </div>
     </div>
   </div>
@@ -82,7 +98,6 @@ function copy(text: string) {
   min-height: 160px;
   padding: 0.8rem;
   font-family: monospace;
-  border: 1px solid #ddd;
   border-radius: 8px;
   resize: vertical;
 }
@@ -95,8 +110,6 @@ function copy(text: string) {
 }
 
 .btn {
-  background: #2563eb;
-  color: #fff;
   border: none;
   padding: 0.6rem 1.4rem;
   border-radius: 8px;
@@ -104,14 +117,14 @@ function copy(text: string) {
   transition: all 0.2s ease;
 }
 
-.btn:hover {
+/* .btn:hover {
   background: #1e40af;
 }
 
 .btn.secondary {
   background: #f3f4f6;
   color: #333;
-}
+} */
 
 .result-area {
   text-align: left;
@@ -125,14 +138,15 @@ function copy(text: string) {
   padding: 1rem;
   font-family: monospace;
   overflow-x: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .copy-btn {
-  position: absolute;
+  /* position: absolute;
   top: 0.6rem;
-  right: 0.6rem;
-  background: #2563eb;
-  color: white;
+  right: 0.6rem; */
   border: none;
   padding: 0.3rem 0.8rem;
   border-radius: 6px;

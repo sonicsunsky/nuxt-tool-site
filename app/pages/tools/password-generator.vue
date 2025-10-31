@@ -5,6 +5,7 @@
     <div class="grid md:grid-cols-2 gap-4">
       <div>
         <label class="font-medium">长度</label>
+
         <input
           type="number"
           v-model.number="length"
@@ -14,22 +15,26 @@
         />
 
         <div class="mt-3 space-y-2">
-          <label
-            ><input type="checkbox" v-model="useUpper" /> 包含大写字母
-            (A-Z)</label
-          >
-          <label
-            ><input type="checkbox" v-model="useLower" /> 包含小写字母
-            (a-z)</label
-          >
-          <label
-            ><input type="checkbox" v-model="useNumbers" /> 包含数字
-            (0-9)</label
-          >
-          <label
-            ><input type="checkbox" v-model="useSymbols" /> 包含符号
-            (!@#$...)</label
-          >
+          <UCheckbox
+            v-model="useUpper"
+            label="包含大写字母
+            (A-Z)"
+          ></UCheckbox>
+          <UCheckbox
+            v-model="useLower"
+            label="包含小写字母
+            (a-z)"
+          ></UCheckbox>
+          <UCheckbox
+            v-model="useNumbers"
+            label="包含数字
+            (0-9)"
+          ></UCheckbox>
+          <UCheckbox
+            v-model="useSymbols"
+            label="包含符号
+            (!@#$...)"
+          ></UCheckbox>
         </div>
 
         <div class="mt-4 flex gap-2">
@@ -118,6 +123,8 @@ function generate() {
   );
   let chars = mandatory.join("");
   const all = pools.join("");
+
+  console.log("generate-------------------: ", pools, mandatory);
 
   for (let i = chars.length; i < length.value; i++) {
     chars += all[Math.floor(Math.random() * all.length)];

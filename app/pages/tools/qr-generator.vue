@@ -5,57 +5,81 @@
     <div class="grid md:grid-cols-2 gap-4">
       <div>
         <label class="font-medium">输入文本 / 链接</label>
-        <textarea
+        <UTextarea
           v-model="text"
-          rows="4"
-          class="w-full border p-2 rounded mt-1"
+          :rows="5"
+          autoresize
+          class="w-full p-2 rounded mt-1"
           placeholder="例如：https://example.com"
-        ></textarea>
+        ></UTextarea>
 
         <div class="mt-3 flex items-center gap-2">
           <label class="flex items-center gap-2">
-            <input
+            <UInput
               type="number"
               v-model.number="size"
-              min="64"
-              max="2048"
-              class="w-24 p-1 border rounded"
+              :min="64"
+              :max="2048"
+              class="w-32 p-1 rounded"
             />
             尺寸(px)
           </label>
 
           <label class="flex items-center gap-2">
             纠错级别:
-            <select v-model="ecLevel" class="ml-2 p-1 border rounded">
-              <option value="L">L（7%）</option>
-              <option value="M">M（15%）</option>
-              <option value="Q">Q（25%）</option>
-              <option value="H">H（30%）</option>
-            </select>
+            <USelect
+              v-model="ecLevel"
+              :items="[
+                {
+                  label: 'L（7%）',
+                  value: 'L',
+                },
+                {
+                  label: 'M（15%）',
+                  value: 'M',
+                },
+                {
+                  label: 'Q（25%）',
+                  value: 'Q',
+                },
+                {
+                  label: 'H（30%）',
+                  value: 'H',
+                },
+              ]"
+              size="xl"
+              class="w-32 ml-2 p-1 rounded"
+            />
           </label>
         </div>
 
         <div class="mt-4 flex gap-2">
-          <button
+          <UButton
+            color="secondary"
+            size="xl"
             @click="generate"
-            class="bg-blue-600 text-white px-4 py-2 rounded"
+            class="px-4 py-2 rounded"
           >
             生成
-          </button>
-          <button
+          </UButton>
+          <UButton
+            color="neutral"
+            size="xl"
             @click="download"
             :disabled="!dataUrl"
-            class="bg-gray-600 text-white px-4 py-2 rounded"
+            class="px-4 py-2 rounded"
           >
             下载 PNG
-          </button>
-          <button
+          </UButton>
+          <UButton
+            color="primary"
+            size="xl"
             @click="copy"
             :disabled="!dataUrl"
-            class="bg-green-600 text-white px-4 py-2 rounded"
+            class="px-4 py-2 rounded"
           >
             复制图片地址
-          </button>
+          </UButton>
         </div>
       </div>
 

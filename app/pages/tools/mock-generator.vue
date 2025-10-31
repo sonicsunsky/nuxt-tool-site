@@ -5,31 +5,35 @@
     <div class="grid md:grid-cols-3 gap-4 mb-4">
       <div>
         <label class="font-medium">生成条数</label>
-        <input
+        <UInput
           v-model.number="count"
           type="number"
-          class="w-full border p-2 rounded mt-1"
-          min="1"
-          max="100"
+          class="w-full p-2 rounded"
+          :min="1"
+          :max="100"
         />
       </div>
+
       <div>
         <label class="font-medium">字段数</label>
-        <input
+        <UInput
           v-model.number="fields"
           type="number"
-          class="w-full border p-2 rounded mt-1"
-          min="1"
-          max="10"
+          class="w-full p-2 rounded"
+          :min="1"
+          :max="10"
         />
       </div>
+
       <div>
-        <button
+        <UButton
+          color="secondary"
+          size="xl"
           @click="generate"
-          class="bg-blue-600 text-white px-4 py-2 mt-6 rounded w-full"
+          class="px-4 py-2 rounded mt-6"
         >
           生成数据
-        </button>
+        </UButton>
       </div>
     </div>
 

@@ -5,70 +5,74 @@
     <div class="grid md:grid-cols-2 gap-4">
       <div>
         <label class="font-medium">请求 URL</label>
-        <input
+        <UInput
           v-model="url"
-          class="w-full border p-2 rounded mt-1"
+          class="w-full p-2 rounded mt-1"
           placeholder="https://api.example.com/v1/items"
         />
 
-        <label class="font-medium mt-3">方法</label>
-        <select v-model="method" class="w-40 border p-2 rounded mt-1">
-          <option>GET</option>
-          <option>POST</option>
-          <option>PUT</option>
-          <option>PATCH</option>
-          <option>DELETE</option>
-        </select>
+        <label class="font-medium mt-3 mr-3">方法</label>
+        <USelect
+          v-model="method"
+          :items="['GET', 'POST', 'PUT', 'PATCH', 'DELETE']"
+          size="xl"
+          class="w-48 p-2 rounded mt-1"
+        >
+        </USelect>
 
         <div class="mt-3">
           <h4 class="font-medium">Headers</h4>
-          <div v-for="(h, idx) in headers" :key="idx" class="flex gap-2 mt-2">
-            <input
+          <div
+            v-for="(h, idx) in headers"
+            :key="idx"
+            class="flex items-center gap-2 mt-2"
+          >
+            <UInput
               v-model="h.key"
               placeholder="Header 名称"
-              class="border p-2 rounded w-1/2"
+              class="p-2 rounded w-1/2"
             />
-            <input
+            <UInput
               v-model="h.value"
               placeholder="Header 值"
-              class="border p-2 rounded flex-1"
+              class="p-2 rounded flex-1"
             />
-            <button
+            <UButton
+              color="error"
+              size="sm"
               @click="removeHeader(idx)"
-              class="px-3 rounded bg-red-500 text-white"
+              class="rounded"
             >
               删除
-            </button>
+            </UButton>
           </div>
-          <button @click="addHeader" class="mt-2 px-3 py-1 border rounded">
+          <UButton @click="addHeader" class="mt-2 px-3 py-1 rounded">
             添加 Header
-          </button>
+          </UButton>
         </div>
 
         <div v-if="method !== 'GET'" class="mt-4">
           <h4 class="font-medium">请求 Body (JSON)</h4>
-          <textarea
+          <UTextarea
             v-model="body"
-            rows="6"
-            class="w-full border p-2 rounded mt-1"
+            :rows="6"
+            class="w-full p-2 rounded mt-1"
             placeholder='{"name":"value"}'
           />
         </div>
 
         <div class="mt-3 flex gap-2">
-          <button
-            @click="build"
-            class="bg-blue-600 text-white px-4 py-2 rounded"
-          >
+          <UButton color="secondary" @click="build" class="px-4 py-2 rounded">
             生成 cURL
-          </button>
-          <button
+          </UButton>
+          <UButton
+            color="primary"
             @click="copyCurl"
             :disabled="!curl"
-            class="bg-green-600 text-white px-4 py-2 rounded"
+            class="px-4 py-2 rounded"
           >
             复制
-          </button>
+          </UButton>
         </div>
       </div>
 

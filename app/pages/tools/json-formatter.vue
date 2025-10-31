@@ -1,27 +1,24 @@
 <template>
   <div>
     <h2 class="text-lg font-bold mb-4">JSON 格式化</h2>
-    <textarea
+
+    <UTextarea
       v-model="input"
-      rows="10"
-      class="w-full border p-2 rounded"
+      :rows="10"
+      class="w-full p-2 rounded"
       placeholder="粘贴 JSON 内容..."
     />
-    <div class="mt-4 flex gap-2">
-      <button
-        @click="formatJson"
-        class="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        格式化
-      </button>
 
-      <button
-        @click="minifyJson"
-        class="bg-gray-600 text-white px-4 py-2 rounded"
-      >
+    <div class="mt-4 flex gap-2">
+      <UButton color="secondary" @click="formatJson" class="px-4 py-2 rounded">
+        格式化
+      </UButton>
+
+      <UButton color="neutral" @click="minifyJson" class="px-4 py-2 rounded">
         压缩
-      </button>
+      </UButton>
     </div>
+
     <pre class="bg-gray-100 p-4 mt-4 rounded overflow-auto text-sm">{{
       output
     }}</pre>

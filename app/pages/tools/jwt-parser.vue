@@ -2,10 +2,11 @@
   <div>
     <h2 class="text-lg font-bold mb-4">JWT Token 解析</h2>
 
-    <textarea
+    <UTextarea
       v-model="token"
-      rows="6"
-      class="w-full border p-2 rounded"
+      :rows="6"
+      autoresize
+      class="w-full p-2 rounded"
       placeholder="粘贴 JWT Token，例如：xxxxx.yyyyy.zzzzz"
     />
 
@@ -14,6 +15,7 @@
         <h3 class="font-semibold mb-2">Header</h3>
         <pre class="bg-gray-100 p-3 rounded text-sm">{{ header }}</pre>
       </div>
+
       <div>
         <h3 class="font-semibold mb-2">Payload</h3>
         <pre class="bg-gray-100 p-3 rounded text-sm">{{ payload }}</pre>
@@ -36,6 +38,7 @@ watch(token, (val) => {
   error.value = "";
 
   if (!val.includes(".")) return;
+
   try {
     const parts = val.split(".");
     header.value = JSON.stringify(JSON.parse(atob(parts[0])), null, 2);

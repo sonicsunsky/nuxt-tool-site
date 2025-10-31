@@ -5,47 +5,56 @@
     <div class="grid md:grid-cols-2 gap-4">
       <div>
         <label class="font-medium">时间戳（秒）</label>
-        <input
+        <UInput
           v-model="timestamp"
           type="number"
-          class="w-full border p-2 rounded mt-1"
+          class="w-full p-2 rounded mt-1"
           placeholder="例如：1735056000"
         />
-        <button
+        <UButton
+          color="secondary"
           @click="toDate"
-          class="bg-blue-600 text-white px-4 py-2 mt-3 rounded"
+          class="px-4 py-2 mt-3 rounded"
         >
           转为日期
-        </button>
+        </UButton>
       </div>
 
       <div>
         <label class="font-medium">日期</label>
-        <input
+        <UInput
           v-model="dateStr"
           type="datetime-local"
-          class="w-full border p-2 rounded mt-1"
+          class="w-full p-2 rounded mt-1"
         />
-        <button
+        <UButton
+          color="neutral"
           @click="toTimestamp"
-          class="bg-gray-600 text-white px-4 py-2 mt-3 rounded"
+          class="px-4 py-2 mt-3 rounded"
         >
           转为时间戳
-        </button>
+        </UButton>
       </div>
     </div>
 
     <div class="mt-6 bg-gray-100 p-4 rounded text-sm">
       <p>当前时间戳（秒）: {{ nowTs }}</p>
-      <p>当前时间: {{ new Date().toLocaleString() }}</p>
+      <p>当前时间: {{ nowDate }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import dayjs from "dayjs";
+
 const timestamp = ref("");
 const dateStr = ref("");
-const nowTs = computed(() => Math.floor(Date.now() / 1000));
+
+const nowTs = useState("nowTs", () => dayjs().unix());
+
+const nowDate = useState("nowDate", () =>
+  dayjs().format("YYYY-MM-DD HH:mm:ss")
+);
 
 function toDate() {
   if (!timestamp.value) return;
