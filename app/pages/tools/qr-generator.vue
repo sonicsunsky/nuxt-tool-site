@@ -101,7 +101,8 @@
 
 <script setup lang="ts">
 import QRCode from "qrcode";
-import { ref } from "vue";
+// import { useToolSeo } from "~/utils/useToolSeo";
+// useToolSeo();
 
 const text = ref("https://");
 const size = ref(256);

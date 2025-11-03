@@ -52,7 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+// import { useToolSeo } from "~/utils/useToolSeo";
+// useToolSeo();
 
 const hex = ref("#1a73e8");
 

@@ -94,7 +94,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+// import { useToolSeo } from "~/utils/useToolSeo";
+// useToolSeo();
 
 const url = ref("");
 const method = ref<"GET" | "POST" | "PUT" | "PATCH" | "DELETE">("GET");

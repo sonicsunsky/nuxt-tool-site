@@ -45,8 +45,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import * as Diff from "diff";
+// import { useToolSeo } from "~/utils/useToolSeo";
+// useToolSeo();
 
 const text1 = ref("");
 const text2 = ref("");

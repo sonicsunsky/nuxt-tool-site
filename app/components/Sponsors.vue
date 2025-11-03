@@ -43,8 +43,18 @@
         </button>
       </div>
 
+      <!-- ✅ 新增底部导航链接 -->
+      <nav
+        class="flex flex-wrap justify-center gap-6 mt-2 text-sm text-gray-600"
+      >
+        <NuxtLink to="/about" class="hover:text-gray-900">关于我们</NuxtLink>
+        <NuxtLink to="/contact" class="hover:text-gray-900">联系我们</NuxtLink>
+        <NuxtLink to="/privacy" class="hover:text-gray-900">隐私政策</NuxtLink>
+        <NuxtLink to="/terms" class="hover:text-gray-900">使用条款</NuxtLink>
+      </nav>
+
+      <!-- QR Teleport 保持原样 -->
       <Teleport to="body">
-        <!-- 微信二维码 -->
         <div
           v-if="showWeChat"
           class="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
@@ -65,7 +75,6 @@
           </div>
         </div>
 
-        <!-- 支付宝二维码 -->
         <div
           v-if="showAlipay"
           class="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
