@@ -22,9 +22,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useToolSeo } from "~/utils/useToolSeo";
-// useToolSeo();
-
 const pattern = ref("");
 const text = ref("");
 

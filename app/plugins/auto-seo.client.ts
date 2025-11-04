@@ -1,16 +1,8 @@
-// plugins/auto-seo.ts
-import {
-  defineNuxtPlugin,
-  useRoute,
-  useHead,
-  useRuntimeConfig,
-  watch,
-} from "#imports";
-
 import { buildSeoData } from "~/utils/seo";
-import { toolsSeoMap } from "~/utils/useToolSeo";
+import { useNormalizedSeoMap } from "~/utils/useToolSeo";
 
 export default defineNuxtPlugin(() => {
+  const normalizedSeoMap = useNormalizedSeoMap();
   const config = useRuntimeConfig().public;
   const siteUrl = config.siteUrl;
   const siteName = config.siteName || "开发者工具箱";
@@ -21,7 +13,7 @@ export default defineNuxtPlugin(() => {
   const applySeoForPath = (path: string) => {
     // normalize: try exact path first, then without trailing slash
     const tryPaths = [path, path.replace(/\/$/, "")];
-    let matched = tryPaths.find((p) => !!toolsSeoMap[p]);
+    let matched = tryPaths.find((p) => !!normalizedSeoMap[p]);
 
     // fallback: if path is root or not in map, use site defaults
     const lang: "zh" | "en" = path.startsWith("/en") ? "en" : "zh";

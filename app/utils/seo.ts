@@ -1,5 +1,5 @@
 // utils/seo.ts
-import { toolsSeoMap, type ToolSeoItem } from "./useToolSeo";
+import { useNormalizedSeoMap, type ToolSeoItem } from "./useToolSeo";
 
 export const buildSeoData = (
   path: string,
@@ -8,7 +8,8 @@ export const buildSeoData = (
   siteName: string,
   defaultOgImage?: string
 ) => {
-  const item: ToolSeoItem | undefined = toolsSeoMap[path];
+  const normalizedSeoMap = useNormalizedSeoMap();
+  const item: ToolSeoItem | undefined = normalizedSeoMap[path];
   const fallback = {
     title: siteName,
     description: `${siteName} – 一站式开发者在线工具集合。`,
@@ -26,12 +27,36 @@ export const buildSeoData = (
   }`;
 
   // JSON-LD basic WebPage schema
+  // const jsonLd = {
+  //   "@context": "https://schema.org",
+  //   "@type": "WebPage",
+  //   url: canonical,
+  //   name: title,
+  //   description: description,
+  //   publisher: {
+  //     "@type": "Organization",
+  //     name: siteName,
+  //   },
+  // };
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    url: canonical,
+    "@type": "SoftwareApplication",
     name: title,
-    description: description,
+    description,
+    url: canonical,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Any",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${siteUrl}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
     publisher: {
       "@type": "Organization",
       name: siteName,

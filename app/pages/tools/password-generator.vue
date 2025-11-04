@@ -92,9 +92,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useToolSeo } from "~/utils/useToolSeo";
-// useToolSeo();
-
 const length = ref(16);
 const useUpper = ref(true);
 const useLower = ref(true);

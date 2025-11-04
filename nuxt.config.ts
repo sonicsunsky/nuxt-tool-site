@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      siteUrl: "https://nuxt-tool-site.vercel.app", // <- 改成你的域名（不要末尾斜杠）
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "", // <- 改成你的域名（不要末尾斜杠）
       siteName: "开发者工具箱",
       defaultOgImage: "/images/og-cover.jpg", // 可选站点默认图
     },

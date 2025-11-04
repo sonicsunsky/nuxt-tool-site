@@ -49,8 +49,6 @@
 
 <script setup lang="ts">
 import { v4 as uuidv4 } from "uuid";
-// import { useToolSeo } from "~/utils/useToolSeo";
-// useToolSeo();
 
 const uuid = ref("");
 const batchList = ref<string[]>([]);

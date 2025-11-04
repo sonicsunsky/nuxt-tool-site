@@ -24,8 +24,6 @@
 
 <script setup lang="ts">
 import { icons } from "@iconify-json/lucide";
-// import { useToolSeo } from "~/utils/useToolSeo";
-// useToolSeo();
 
 const lucideIcons = ref([]);
 // 获取所有图标名称

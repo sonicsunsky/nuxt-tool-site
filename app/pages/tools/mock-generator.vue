@@ -44,9 +44,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useToolSeo } from "~/utils/useToolSeo";
-// useToolSeo();
-
 const count = ref(5);
 const fields = ref(3);
 const result = ref("");

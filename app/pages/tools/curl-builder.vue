@@ -94,9 +94,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useToolSeo } from "~/utils/useToolSeo";
-// useToolSeo();
-
 const url = ref("");
 const method = ref<"GET" | "POST" | "PUT" | "PATCH" | "DELETE">("GET");
 const headers = ref<{ key: string; value: string }[]>([]);
