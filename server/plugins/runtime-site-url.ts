@@ -11,6 +11,7 @@ export default defineNitroPlugin((nitroApp) => {
 
     const protocol = event.node.req.headers["x-forwarded-proto"] || "https";
     const runtimeConfig = useRuntimeConfig();
+    console.log("host:", reqHost, "proto:", protocol);
     runtimeConfig.public.siteUrl = `${protocol}://${reqHost}`;
   });
 });
