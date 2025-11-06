@@ -21,6 +21,8 @@
     </main>
 
     <Sponsors />
+
+    <AnalyticsTracker />
   </div>
 </template>
 
