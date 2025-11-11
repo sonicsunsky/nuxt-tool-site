@@ -3,6 +3,16 @@
     <h1 class="tool-title">🔗 URL 编解码工具</h1>
     <p class="tool-desc">支持 encodeURIComponent / decodeURIComponent 编解码</p>
 
+    <section
+      class="mt-10 p-6 bg-gray-50 text-gray-700 rounded-xl leading-relaxed"
+    >
+      <h3 class="text-lg font-bold mb-2">URL 编码与解码介绍</h3>
+      <p>
+        URL 编码用于将特殊字符转换为安全格式，以便在网络传输中不丢失信息。
+        本工具支持对文本进行编码与解码，常用于链接参数处理与 Web 开发场景。
+      </p>
+    </section>
+
     <UTextarea
       v-model="input"
       placeholder="请输入要编码或解码的内容..."

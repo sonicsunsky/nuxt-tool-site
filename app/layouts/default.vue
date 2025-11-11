@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <header
-      class="p-6 max-w-5xl w-full mx-auto mb-6 flex items-center justify-between"
+      class="p-6 max-w-6xl w-full mx-auto mb-6 flex items-center justify-between"
     >
       <h1 class="text-2xl font-bold">
         <NuxtLink to="/"> 🧰 开发者工具箱 </NuxtLink>
@@ -15,7 +15,7 @@
     </header>
 
     <main
-      class="flex-grow bg-white rounded-2xl shadow p-6 max-w-5xl w-full mx-auto"
+      class="flex-grow bg-white rounded-2xl shadow p-6 max-w-6xl w-full mx-auto"
     >
       <slot />
     </main>

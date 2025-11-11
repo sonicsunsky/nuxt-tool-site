@@ -6,7 +6,7 @@ export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig().public;
   const siteUrl = config.siteUrl;
   const siteName = config.siteName || "开发者工具箱";
-  const defaultOgImage = config.defaultOgImage;
+  const defaultOgImage = config.defaultOgImage || "/images/og-cover.jpg";
 
   const route = useRoute();
 
@@ -19,8 +19,16 @@ export default defineNuxtPlugin(() => {
     const lang: "zh" | "en" = path.startsWith("/en") ? "en" : "zh";
     const targetPath = matched ?? path; // if not matched, jsonld will use the actual path
 
-    const { title, description, keywords, canonical, ogImage, jsonLd } =
-      buildSeoData(matched ?? path, lang, siteUrl, siteName, defaultOgImage);
+    const {
+      title,
+      description,
+      ogTitle,
+      ogDescription,
+      keywords,
+      canonical,
+      ogImage,
+      jsonLd,
+    } = buildSeoData(matched ?? path, lang, siteUrl, siteName, defaultOgImage);
 
     useHead({
       title,
@@ -32,8 +40,8 @@ export default defineNuxtPlugin(() => {
         // Open Graph
         { property: "og:type", content: "website" },
         { property: "og:url", content: canonical },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
+        { property: "og:title", content: ogTitle },
+        { property: "og:description", content: ogDescription },
         { property: "og:image", content: ogImage },
 
         // Twitter

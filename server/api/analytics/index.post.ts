@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
     screen: body.screen,
   };
 
-  console.log("Analytics Log:", log);
+  // console.log("Analytics Log:", log);
 
   return { success: true };
 });

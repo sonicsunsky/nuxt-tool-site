@@ -1,5 +1,5 @@
 export default defineEventHandler((event) => {
-  console.log("DEBUG headers:", event.node.req.headers);
+  // console.log("DEBUG headers:", event.node.req.headers);
   const host =
     event.node.req.headers["x-forwarded-host"] ||
     event.node.req.headers["host"] ||

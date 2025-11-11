@@ -2,6 +2,16 @@
   <div>
     <h2 class="text-lg font-bold mb-4">时间戳 ↔ 日期转换</h2>
 
+    <section
+      class="mt-10 p-6 bg-gray-50 text-gray-700 rounded-xl leading-relaxed"
+    >
+      <h3 class="text-lg font-bold mb-2">时间戳转换工具介绍</h3>
+      <p>
+        时间戳用于表示时间点，例如 Unix Timestamp（1970 起）。
+        本工具支持毫秒与秒级时间戳，与北京时间/本地时区互相转换，用于日志分析与系统调试。
+      </p>
+    </section>
+
     <div class="grid md:grid-cols-2 gap-4">
       <div>
         <label class="font-medium">时间戳（秒）</label>

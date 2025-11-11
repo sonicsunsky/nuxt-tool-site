@@ -20,48 +20,37 @@ export const buildSeoData = (
 
   const title = data.title ?? fallback.title;
   const description = data.description ?? fallback.description;
+  const ogTitle = data.ogTitle ?? title;
+  const ogDescription = data.ogDescription ?? description;
   const keywords = data.keywords ?? fallback.keywords;
-  const canonical = `${siteUrl}${path}`;
-  const ogImage = `${siteUrl}/og-image?title=${encodeURIComponent(title)}${
-    defaultOgImage ? `&fallback=${encodeURIComponent(defaultOgImage)}` : ""
-  }`;
+  const canonical = item?.[lang]?.canonical ?? `${siteUrl}${path}`;
+  const ogImage = `${siteUrl}/images/og-cover.jpg?title=${encodeURIComponent(
+    title
+  )}${defaultOgImage ? `&fallback=${encodeURIComponent(defaultOgImage)}` : ""}`;
 
-  // JSON-LD basic WebPage schema
-  // const jsonLd = {
-  //   "@context": "https://schema.org",
-  //   "@type": "WebPage",
-  //   url: canonical,
-  //   name: title,
-  //   description: description,
-  //   publisher: {
-  //     "@type": "Organization",
-  //     name: siteName,
-  //   },
-  // };
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: title,
-    description,
-    url: canonical,
-    applicationCategory: "DeveloperApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      url: canonical,
+      name: title,
+      description,
     },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteUrl}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: title,
+      description,
+      url: canonical,
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Any",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
     },
-    publisher: {
-      "@type": "Organization",
-      name: siteName,
-    },
-  };
+  ];
 
   return { title, description, keywords, canonical, ogImage, jsonLd };
 };

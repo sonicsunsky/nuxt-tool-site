@@ -2,6 +2,16 @@
   <div>
     <h2 class="text-lg font-bold mb-4">密码生成器</h2>
 
+    <section
+      class="mt-10 p-6 bg-gray-50 text-gray-700 rounded-xl leading-relaxed"
+    >
+      <h3 class="text-lg font-bold mb-2">密码生成工具说明</h3>
+      <p>
+        本工具可生成随机强密码，支持自定义长度与字符规则，提升账户安全性。
+        密码仅在本地生成，不会上传服务器。
+      </p>
+    </section>
+
     <div class="grid md:grid-cols-2 gap-4">
       <div>
         <label class="font-medium">长度</label>

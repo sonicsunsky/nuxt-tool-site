@@ -7,6 +7,7 @@ export interface ToolSeoItem {
     keywords: string;
     ogTitle?: string;
     ogDescription?: string;
+    canonical?: string;
   };
   en: {
     title: string;
@@ -14,6 +15,7 @@ export interface ToolSeoItem {
     keywords: string;
     ogTitle?: string;
     ogDescription?: string;
+    canonical?: string;
   };
 }
 

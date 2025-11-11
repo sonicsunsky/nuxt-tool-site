@@ -1,104 +1,111 @@
 <template>
-  <div>
-    <h2 class="text-lg font-bold mb-4">cURL / HTTP 请求构建器</h2>
+  <div class="max-w-5xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold mb-4">cURL / HTTP 请求构建器</h1>
+    <p class="text-gray-600 mb-10">
+      在线构建并测试 cURL 命令，支持 GET / POST / JSON Body / Headers 自动生成。
+    </p>
 
-    <div class="grid md:grid-cols-2 gap-4">
+    <!-- 请求信息 -->
+    <UCard class="mb-8">
       <div>
-        <label class="font-medium">请求 URL</label>
+        <label class="font-medium mr-4">请求 URL</label>
         <UInput
           v-model="url"
-          class="w-full p-2 rounded mt-1"
-          placeholder="https://api.example.com/v1/items"
+          placeholder="https://api.example.com/v1/demo"
+          class="mt-1 w-80"
         />
 
-        <label class="font-medium mt-3 mr-3">方法</label>
-        <USelect
-          v-model="method"
-          :items="['GET', 'POST', 'PUT', 'PATCH', 'DELETE']"
-          size="xl"
-          class="w-48 p-2 rounded mt-1"
-        >
-        </USelect>
-
-        <div class="mt-3">
-          <h4 class="font-medium">Headers</h4>
-          <div
-            v-for="(h, idx) in headers"
-            :key="idx"
-            class="flex items-center gap-2 mt-2"
-          >
-            <UInput
-              v-model="h.key"
-              placeholder="Header 名称"
-              class="p-2 rounded w-1/2"
-            />
-            <UInput
-              v-model="h.value"
-              placeholder="Header 值"
-              class="p-2 rounded flex-1"
-            />
-            <UButton
-              color="error"
-              size="sm"
-              @click="removeHeader(idx)"
-              class="rounded"
-            >
-              删除
-            </UButton>
-          </div>
-          <UButton @click="addHeader" class="mt-2 px-3 py-1 rounded">
-            添加 Header
-          </UButton>
+        <!-- Method -->
+        <div class="mt-4">
+          <label class="font-medium mr-4">请求方法</label>
+          <USelect v-model="method" :items="methods" class="w-80 mt-1" />
         </div>
 
-        <div v-if="method !== 'GET'" class="mt-4">
-          <h4 class="font-medium">请求 Body (JSON)</h4>
+        <!-- Headers -->
+        <div class="mt-6">
+          <h3 class="font-semibold mb-2">Headers</h3>
+          <div v-for="(h, i) in headers" :key="i" class="flex gap-2 mb-2">
+            <UInput placeholder="Key" v-model="h.key" />
+            <UInput placeholder="Value" v-model="h.value" />
+            <UButton
+              icon="i-heroicons-trash"
+              color="error"
+              variant="soft"
+              @click="removeHeader(i)"
+            />
+          </div>
+          <UButton variant="soft" size="sm" @click="addHeader"
+            >+ 添加 Header</UButton
+          >
+        </div>
+
+        <!-- Body -->
+        <div v-if="method !== 'GET'" class="mt-6">
+          <label class="font-medium mr-4">请求 Body (JSON)</label>
           <UTextarea
             v-model="body"
-            :rows="6"
-            class="w-full p-2 rounded mt-1"
-            placeholder='{"name":"value"}'
+            rows="6"
+            class="mt-1"
+            placeholder='{"name":"ChatGPT"}'
           />
-        </div>
 
-        <div class="mt-3 flex gap-2">
-          <UButton color="secondary" @click="build" class="px-4 py-2 rounded">
-            生成 cURL
-          </UButton>
-          <UButton
-            color="primary"
-            @click="copyCurl"
-            :disabled="!curl"
-            class="px-4 py-2 rounded"
-          >
-            复制
-          </UButton>
-        </div>
-      </div>
-
-      <div>
-        <label class="font-medium">生成的 cURL</label>
-        <pre class="bg-gray-50 p-3 rounded h-64 overflow-auto text-sm">{{
-          curl || "# 点击生成"
-        }}</pre>
-
-        <div class="mt-4">
-          <label class="font-medium">命令测试（可选）</label>
-          <div class="text-sm text-gray-600 mt-2">
-            你可以将生成的 cURL 粘贴到终端执行，或在 Postman / HTTPie 中使用。
+          <div class="flex gap-2 mt-2">
+            <UButton variant="soft" size="sm" @click="formatJson"
+              >格式化 JSON</UButton
+            >
           </div>
         </div>
+
+        <div class="mt-6 flex gap-2">
+          <UButton @click="build" color="secondary">生成 cURL</UButton>
+          <UButton @click="execute" :disabled="!url" color="primary"
+            >测试请求</UButton
+          >
+        </div>
       </div>
-    </div>
+    </UCard>
+
+    <!-- cURL 显示 -->
+    <UCard class="mb-8">
+      <h3 class="font-semibold mb-2">生成的 cURL 命令</h3>
+      <pre
+        class="bg-gray-100 p-3 rounded h-48 overflow-auto text-sm whitespace-pre-wrap"
+      >
+        {{ curl || "# 输入信息以生成 cURL" }}
+      </pre>
+      <UButton size="sm" class="mt-2" :disabled="!curl" @click="copyCurl"
+        >📋 复制 cURL</UButton
+      >
+    </UCard>
+
+    <!-- 响应结果 -->
+    <UCard v-if="response">
+      <h3 class="font-semibold mb-3">请求响应结果</h3>
+      <div class="text-sm text-gray-600 mb-2">
+        ✅ 状态：{{ status }} ｜ ⏱ {{ time }} ms
+      </div>
+      <pre
+        class="bg-gray-50 p-3 rounded h-64 overflow-auto text-xs whitespace-pre-wrap"
+        >{{ response }}
+      </pre>
+      <UButton size="sm" class="mt-2" @click="copyResponse"
+        >复制响应内容</UButton
+      >
+    </UCard>
   </div>
 </template>
 
 <script setup lang="ts">
 const url = ref("");
-const method = ref<"GET" | "POST" | "PUT" | "PATCH" | "DELETE">("GET");
-const headers = ref<{ key: string; value: string }[]>([]);
+const methods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+const method = ref("GET");
+const headers = ref([{ key: "", value: "" }]);
 const body = ref("");
 const curl = ref("");
+
+const response = ref("");
+const status = ref("");
+const time = ref(0);
 
 function addHeader() {
   headers.value.push({ key: "", value: "" });
@@ -106,39 +113,60 @@ function addHeader() {
 function removeHeader(i: number) {
   headers.value.splice(i, 1);
 }
-
 function escapeShell(s: string) {
-  // 简单单引号包裹并转义单引号：' -> '"'"'
   return `'${s.replace(/'/g, `'\"'\"'`)}'`;
 }
 
 function build() {
-  if (!url.value) {
-    alert("请输入 URL");
-    return;
-  }
-  let parts: string[] = ["curl -i"];
-  parts.push(`-X ${method.value}`);
-
-  headers.value.forEach((h) => {
-    if (h.key.trim()) parts.push(`-H ${escapeShell(`${h.key}: ${h.value}`)}`);
-  });
-
+  const parts = [`curl -i -X ${method.value}`];
+  headers.value.forEach(
+    (h) => h.key && parts.push(`-H ${escapeShell(`${h.key}: ${h.value}`)}`)
+  );
   if (method.value !== "GET" && body.value.trim()) {
-    // 尝试美化 JSON 并用单引号包裹
-    let b = body.value;
     try {
-      b = JSON.stringify(JSON.parse(body.value));
-    } catch {}
-    parts.push(`-d ${escapeShell(b)}`);
+      JSON.parse(body.value);
+    } catch {
+      alert("Body 不是合法 JSON");
+    }
+    parts.push(`-d ${escapeShell(body.value.trim())}`);
   }
-
   parts.push(escapeShell(url.value));
   curl.value = parts.join(" \\\n  ");
 }
 
-function copyCurl() {
-  if (!curl.value) return;
-  navigator.clipboard.writeText(curl.value).then(() => alert("已复制 cURL"));
+function formatJson() {
+  try {
+    body.value = JSON.stringify(JSON.parse(body.value), null, 2);
+  } catch {
+    alert("JSON 格式不正确");
+  }
+}
+
+async function copyCurl() {
+  await navigator.clipboard.writeText(curl.value);
+  alert("✅ 已复制 cURL");
+}
+
+async function copyResponse() {
+  await navigator.clipboard.writeText(response.value);
+  alert("✅ 已复制响应内容");
+}
+
+async function execute() {
+  const start = performance.now();
+  try {
+    const res = await fetch(url.value, {
+      method: method.value,
+      headers: Object.fromEntries(
+        headers.value.filter((h) => h.key).map((h) => [h.key, h.value])
+      ),
+      body: method.value !== "GET" ? body.value || undefined : undefined,
+    });
+    status.value = `${res.status} ${res.statusText}`;
+    response.value = await res.text();
+  } catch (err) {
+    response.value = `❌ 请求失败：${err}`;
+  }
+  time.value = Math.round(performance.now() - start);
 }
 </script>

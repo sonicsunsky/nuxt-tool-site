@@ -2,6 +2,28 @@
   <div>
     <h2 class="text-lg font-bold mb-4">QR 码生成器</h2>
 
+    <section
+      class="mt-8 leading-relaxed text-gray-600 text-sm bg-gray-50 p-4 rounded"
+    >
+      <h3 class="text-lg font-bold mb-2">什么是二维码生成器？</h3>
+      <p>
+        二维码生成器是一种将文本、网址等信息转换成二维码图片的工具。
+        你可以快速创建用于分享、扫码登录、宣传活动等用途的二维码图片。
+        下面输入任意文本并点击“生成”即可显示二维码。
+      </p>
+
+      <h3 class="text-lg font-bold mt-4 mb-2">如何使用？</h3>
+      <ol class="list-disc ml-6">
+        <li>输入网址或文本内容</li>
+        <li>选择二维码尺寸与纠错级别</li>
+        <li>点击“生成”即可展示二维码</li>
+        <li>支持下载或复制二维码图片链接</li>
+      </ol>
+
+      <h3 class="text-lg font-bold mt-4 mb-2">二维码示例</h3>
+      <pre class="bg-white p-3 rounded">https://developer-tools.com</pre>
+    </section>
+
     <div class="grid md:grid-cols-2 gap-4">
       <div>
         <label class="font-medium">输入文本 / 链接</label>

@@ -7,22 +7,22 @@
 
       <div class="flex flex-wrap justify-center gap-4">
         <!-- GitHub Sponsors -->
-        <button
+        <!-- <button
           @click="open('https://github.com/sponsors/sonicsunsky')"
           class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-900 text-white hover:bg-gray-800 transition"
         >
           <Icon name="mdi:github" size="20" />
           GitHub Sponsors
-        </button>
+        </button> -->
 
         <!-- Buy Me a Coffee -->
-        <button
+        <!-- <button
           @click="open('https://buymeacoffee.com/sonicsunsky')"
           class="flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-500 text-white hover:bg-yellow-400 transition"
         >
           <Icon name="mdi:coffee" size="20" />
           Buy Me a Coffee
-        </button>
+        </button> -->
 
         <!-- 微信收款 -->
         <button
@@ -97,8 +97,7 @@
       </Teleport>
 
       <p class="text-sm text-gray-500 mt-4">
-        © {{ new Date().getFullYear() }} 开发者工具箱 | 构建于
-        <strong>Nuxt 4 + Vue 3</strong>
+        © {{ new Date().getFullYear() }} 开发者工具箱
       </p>
     </div>
   </footer>

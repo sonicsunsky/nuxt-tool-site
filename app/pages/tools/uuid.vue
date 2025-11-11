@@ -2,6 +2,17 @@
   <div>
     <h2 class="text-lg font-bold mb-4">UUID 生成</h2>
 
+    <section
+      class="mt-10 p-6 bg-gray-50 text-gray-700 rounded-xl leading-relaxed"
+    >
+      <h3 class="text-lg font-bold mb-2">UUID 生成工具介绍</h3>
+      <p>
+        UUID（通用唯一识别码）用于唯一标识信息，如设备 ID、请求 ID 等。
+        本工具可一键生成多个
+        UUID，支持格式去除连字符，用于数据库主键或随机标识创建。
+      </p>
+    </section>
+
     <div class="flex gap-3">
       <UButton
         color="primary"
