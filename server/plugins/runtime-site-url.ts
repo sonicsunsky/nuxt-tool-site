@@ -13,5 +13,6 @@ export default defineNitroPlugin((nitroApp) => {
     const runtimeConfig = useRuntimeConfig();
     console.log("host:", reqHost, "proto:", protocol);
     runtimeConfig.public.siteUrl = `${protocol}://${reqHost}`;
+    process.env.NUXT_PUBLIC_SITE_URL = `${protocol}://${reqHost}`;
   });
 });

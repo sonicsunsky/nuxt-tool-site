@@ -47,7 +47,7 @@
       v-if="totalPages > 1"
       v-model:page="page"
       :total="filteredIcons.length"
-      :page-size="pageSize"
+      :items-per-page="pageSize"
       class="mt-6"
     />
   </div>
@@ -90,7 +90,7 @@ function copy(name: string) {
   toast.add({
     title: "复制成功 ✅",
     description: `${name} 已复制到剪贴板`,
-    timeout: 2000,
+    color: "success",
   });
 }
 </script>

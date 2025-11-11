@@ -20,9 +20,13 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
   ui: {
     fonts: false,
+    notifications: {
+      position: "bottom-right",
+      timeout: 2000,
+    },
   },
   site: {
-    url: "https://nuxt-tool-site.vercel.app", // ✅换成你自己的域名
+    url: process.env.NUXT_PUBLIC_SITE_URL || "", // ✅换成你自己的域名
   },
   sitemap: {
     strictNuxtContentPaths: true,
