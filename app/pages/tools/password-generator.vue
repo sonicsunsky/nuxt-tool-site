@@ -12,10 +12,10 @@
       </p>
     </section>
 
-    <div class="grid md:grid-cols-2 gap-4">
+    <div class="grid md:grid-cols-2 gap-6 mt-6">
+      <!-- 左侧控制区 -->
       <div>
-        <label class="font-medium">长度</label>
-
+        <label class="font-medium">密码长度</label>
         <UInput
           type="number"
           v-model.number="length"
@@ -25,83 +25,56 @@
         />
 
         <div class="mt-3 space-y-2">
-          <UCheckbox
-            v-model="useUpper"
-            label="包含大写字母
-            (A-Z)"
-          ></UCheckbox>
-          <UCheckbox
-            v-model="useLower"
-            label="包含小写字母
-            (a-z)"
-          ></UCheckbox>
-          <UCheckbox
-            v-model="useNumbers"
-            label="包含数字
-            (0-9)"
-          ></UCheckbox>
-          <UCheckbox
-            v-model="useSymbols"
-            label="包含符号
-            (!@#$...)"
-          ></UCheckbox>
+          <UCheckbox v-model="useUpper" label="包含大写字母 (A-Z)" />
+          <UCheckbox v-model="useLower" label="包含小写字母 (a-z)" />
+          <UCheckbox v-model="useNumbers" label="包含数字 (0-9)" />
+          <UCheckbox v-model="useSymbols" label="包含符号 (!@#$%^&*)" />
         </div>
 
-        <div class="mt-4 flex gap-2">
-          <UButton
-            color="secondary"
-            size="xl"
-            @click="generate"
-            class="px-4 py-2 rounded"
-          >
-            生成
+        <div class="mt-5 flex gap-3">
+          <UButton color="secondary" size="xl" @click="generate">
+            生成密码
           </UButton>
-
-          <UButton
-            color="primary"
-            size="xl"
-            @click="copyOne"
-            class="px-4 py-2 rounded"
-            :disabled="!pw"
-          >
-            复制
+          <UButton color="primary" size="xl" :disabled="!pw" @click="copyOne">
+            复制密码
           </UButton>
         </div>
       </div>
 
+      <!-- 右侧显示区 -->
       <div>
         <label class="font-medium">生成结果</label>
         <UTextarea
           readonly
           v-model="pw"
-          :rows="4"
-          class="w-full p-2 rounded mt-1"
-        >
-        </UTextarea>
+          :rows="3"
+          class="w-full p-2 rounded mt-1 text-lg font-mono"
+        />
 
         <div class="mt-4">
           <UButton
             color="neutral"
             variant="outline"
-            size="xl"
+            size="lg"
             @click="generateBatch"
-            class="px-3 py-1 rounded"
           >
-            批量生成 10 个
+            批量生成 10 个密码
           </UButton>
         </div>
 
         <pre
           v-if="batch.length"
-          class="mt-3 bg-gray-50 p-3 rounded h-60 overflow-auto text-sm"
-          >{{ batch.join("\n") }}</pre
-        >
+          class="mt-3 bg-gray-100 p-3 rounded h-60 overflow-auto text-sm font-mono"
+          >{{ batch.join("\n") }}
+        </pre>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const toast = useToast();
+
 const length = ref(16);
 const useUpper = ref(true);
 const useLower = ref(true);
@@ -113,6 +86,13 @@ const batch = ref<string[]>([]);
 
 const SYMBOLS = "!@#$%^&*()-_=+[]{}|;:,.<>?";
 
+// ✅ 使用更安全的随机函数
+function randomChar(chars: string): string {
+  const array = new Uint32Array(1);
+  crypto.getRandomValues(array);
+  return chars[array[0] % chars.length];
+}
+
 function generate() {
   const pools: string[] = [];
   if (useUpper.value) pools.push("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -121,24 +101,27 @@ function generate() {
   if (useSymbols.value) pools.push(SYMBOLS);
 
   if (!pools.length) {
-    alert("请至少选择一个字符集");
+    toast.add({
+      title: "⚠️ 提示",
+      description: "请至少选择一个字符集",
+      color: "warning",
+    });
     return;
   }
 
-  // 确保每类至少出现一个字符（更安全）
-  const mandatory: string[] = pools.map(
-    (p) => p[Math.floor(Math.random() * p.length)]
-  );
-  let chars = mandatory.join("");
-  const all = pools.join("");
+  const allChars = pools.join("");
+  let password = "";
 
-  console.log("generate-------------------: ", pools, mandatory);
+  // ✅ 每种类型至少保证一个字符
+  pools.forEach((p) => (password += randomChar(p)));
 
-  for (let i = chars.length; i < length.value; i++) {
-    chars += all[Math.floor(Math.random() * all.length)];
+  // ✅ 填充剩余长度
+  while (password.length < length.value) {
+    password += randomChar(allChars);
   }
-  // 打乱
-  pw.value = chars
+
+  // ✅ 打乱顺序
+  pw.value = password
     .split("")
     .sort(() => Math.random() - 0.5)
     .join("");
@@ -146,13 +129,26 @@ function generate() {
 
 function copyOne() {
   if (!pw.value) return;
-  navigator.clipboard.writeText(pw.value).then(() => alert("已复制"));
+  navigator.clipboard.writeText(pw.value);
+  toast.add({
+    title: "✅ 已复制密码",
+    description: "密码已复制到剪贴板",
+    color: "success",
+  });
 }
 
 function generateBatch() {
-  batch.value = Array.from({ length: 10 }).map(() => {
+  const list: string[] = [];
+  for (let i = 0; i < 10; i++) {
     generate();
-    return pw.value;
+    list.push(pw.value);
+  }
+  batch.value = list;
+
+  toast.add({
+    title: "🎉 批量生成成功",
+    description: "已生成 10 个随机密码",
+    color: "success",
   });
 }
 </script>

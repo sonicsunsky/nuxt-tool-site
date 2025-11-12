@@ -55,7 +55,6 @@
 
 <script setup lang="ts">
 import { icons } from "@iconify-json/lucide";
-import { useToast } from "#imports";
 
 const toast = useToast();
 const pageSize = 90; // ✅分页，防止几千图标导致卡顿

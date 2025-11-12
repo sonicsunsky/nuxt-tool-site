@@ -10,11 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.1.0",
     "@iconify/vue": "^5.0.0",
     "@nuxt/image": "^1.11.0",
     "@nuxt/ui": "^4.0.1",
     "@pinia/nuxt": "^0.11.2",
     "@upstash/redis": "^1.35.6",
+    "@vueuse/core": "^14.0.0",
     "dayjs": "^1.11.18",
     "diff": "^8.0.2",
     "geoip-lite": "^1.4.10",

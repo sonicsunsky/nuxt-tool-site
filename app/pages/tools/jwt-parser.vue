@@ -1,39 +1,76 @@
 <template>
   <div>
-    <h2 class="text-lg font-bold mb-4">JWT Token 解析</h2>
+    <h2 class="text-lg font-bold mb-4">JWT Token 解析工具</h2>
 
+    <!-- 介绍说明 -->
     <section
       class="mt-10 p-6 bg-gray-50 text-gray-700 rounded-xl leading-relaxed"
     >
-      <h3 class="text-lg font-bold mb-2">什么是 JWT 解析工具？</h3>
+      <h3 class="text-lg font-bold mb-2">工具简介</h3>
       <p>
-        JWT Token 用于用户鉴权与安全通信，包含 Header、Payload 和 Signature。
-        本工具可解析 JWT 内容并展示其 JSON 数据结构，用于调试认证系统与 API
-        安全。 所有处理在本地完成，数据不会上传服务器。
+        JWT（JSON Web Token）
+        通常用于用户身份验证和数据安全传输。它由三部分组成：
+        <code>Header</code>、<code>Payload</code> 和
+        <code>Signature</code>。本工具可以快速解析前两部分内容，并以 JSON
+        格式展示。
+      </p>
+      <p class="mt-2 text-sm text-gray-500">
+        ⚠️ 所有解析均在本地浏览器中完成，不会上传任何数据。
       </p>
     </section>
 
-    <UTextarea
-      v-model="token"
-      :rows="6"
-      autoresize
-      class="w-full p-2 rounded"
-      placeholder="粘贴 JWT Token，例如：xxxxx.yyyyy.zzzzz"
-    />
-
-    <div v-if="header || payload" class="mt-6 grid md:grid-cols-2 gap-4">
-      <div>
-        <h3 class="font-semibold mb-2">Header</h3>
-        <pre class="bg-gray-100 p-3 rounded text-sm">{{ header }}</pre>
-      </div>
-
-      <div>
-        <h3 class="font-semibold mb-2">Payload</h3>
-        <pre class="bg-gray-100 p-3 rounded text-sm">{{ payload }}</pre>
+    <!-- 输入区 -->
+    <div class="mt-6">
+      <UTextarea
+        v-model="token"
+        :rows="6"
+        placeholder="粘贴 JWT Token，例如：xxxxx.yyyyy.zzzzz"
+        class="w-full font-mono"
+      />
+      <div class="mt-2 flex gap-2">
+        <UButton color="primary" @click="parseJwt">解析</UButton>
+        <UButton color="error" variant="soft" @click="clearAll">清空</UButton>
       </div>
     </div>
 
-    <div v-if="error" class="text-red-600 mt-2">{{ error }}</div>
+    <!-- 输出区 -->
+    <div v-if="header || payload" class="mt-8 grid md:grid-cols-2 gap-4">
+      <div class="relative bg-gray-50 p-4 rounded-xl border">
+        <h3 class="font-semibold mb-2">Header</h3>
+        <pre class="bg-white p-3 rounded text-sm overflow-auto min-h-[150px]">{{
+          header
+        }}</pre>
+        <UButton
+          size="xl"
+          color="primary"
+          variant="soft"
+          class="absolute top-2 right-2"
+          @click="copy(header, 'Header')"
+        >
+          复制
+        </UButton>
+      </div>
+
+      <div class="relative bg-gray-50 p-4 rounded-xl border">
+        <h3 class="font-semibold mb-2">Payload</h3>
+        <pre class="bg-white p-3 rounded text-sm overflow-auto min-h-[150px]">{{
+          payload
+        }}</pre>
+        <UButton
+          size="xl"
+          color="primary"
+          variant="soft"
+          class="absolute top-2 right-2"
+          @click="copy(payload, 'Payload')"
+        >
+          复制
+        </UButton>
+      </div>
+    </div>
+
+    <div v-if="error" class="text-red-600 mt-4 text-sm font-medium">
+      {{ error }}
+    </div>
   </div>
 </template>
 
@@ -42,20 +79,65 @@ const token = ref("");
 const header = ref("");
 const payload = ref("");
 const error = ref("");
+const toast = useToast();
 
-watch(token, (val) => {
+/** ✅ 解析 JWT Token */
+function parseJwt() {
   header.value = "";
   payload.value = "";
   error.value = "";
 
-  if (!val.includes(".")) return;
+  if (!token.value || !token.value.includes(".")) {
+    error.value = "⚠️ 无效的 JWT Token 格式";
+    return;
+  }
 
   try {
-    const parts = val.split(".");
-    header.value = JSON.stringify(JSON.parse(atob(parts[0])), null, 2);
-    payload.value = JSON.stringify(JSON.parse(atob(parts[1])), null, 2);
+    const [h, p] = token.value.split(".");
+    header.value = JSON.stringify(JSON.parse(atob(h)), null, 2);
+    payload.value = JSON.stringify(JSON.parse(atob(p)), null, 2);
+    toast.add({
+      title: "解析成功 ✅",
+      description: "JWT 已成功解析",
+      color: "success",
+    });
   } catch (e) {
-    error.value = "❌ 无法解析 Token";
+    error.value = "❌ 无法解析 JWT，请检查格式是否正确";
+    toast.add({
+      title: "解析失败 ❌",
+      description: "请确保输入合法的 JWT Token",
+      color: "error",
+    });
   }
-});
+}
+
+/** ✅ 一键复制 */
+function copy(value: string, label: string) {
+  if (!value) return;
+  navigator.clipboard.writeText(value);
+  toast.add({
+    title: "复制成功 ✅",
+    description: `${label} 已复制到剪贴板`,
+    color: "success",
+  });
+}
+
+/** ✅ 清空输入与结果 */
+function clearAll() {
+  token.value = "";
+  header.value = "";
+  payload.value = "";
+  error.value = "";
+  toast.add({
+    title: "已清空 ✨",
+    color: "neutral",
+  });
+}
 </script>
+
+<style scoped>
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+</style>
