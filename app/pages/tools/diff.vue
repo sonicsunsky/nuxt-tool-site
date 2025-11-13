@@ -5,25 +5,25 @@
       快速比较两段文本差异并高亮显示不同内容，适用于代码审查、文档比对等场景。
     </p>
 
-    <!-- SEO 内容说明 ✅ -->
+    <!-- ✅ 工具介绍 -->
     <section class="info-block">
       <h3 class="info-title">文本差异对比工具介绍</h3>
       <p>
-        本工具支持对比两段文本差异并实时高亮：<strong>绿色表示新增</strong>、
-        <strong>红色表示删除</strong>。常用于代码审查、配置比对、
-        文档版本管理等工作，支持多语言文本对比。
+        本工具支持对比两段文本差异并实时高亮：
+        <strong class="text-green-600">绿色表示新增</strong>，
+        <strong class="text-red-600">红色表示删除</strong>。
+        常用于代码审查、配置比对、文档版本管理等工作。
       </p>
-
-      <h4 class="mt-4 font-semibold">示例</h4>
+      <h4 class="mt-3 font-semibold">示例：</h4>
       <pre class="example-code">
 原文：Hello World!
 对比：Hello GPT World!
 
-✅ “GPT ”将会显示为新增内容（绿色）</pre
+✅ “GPT ”将显示为新增内容（绿色）</pre
       >
     </section>
 
-    <!-- 输入区域 -->
+    <!-- ✅ 输入区 -->
     <div class="diff-area">
       <div class="text-column">
         <h3>原始文本</h3>
@@ -31,8 +31,9 @@
           v-model="text1"
           :rows="12"
           autoresize
-          class="w-1/2"
-          placeholder="输入第一段文本..."
+          placeholder="请输入原始文本..."
+          class="w-[400px]"
+          @input="autoCompare"
         />
       </div>
 
@@ -42,12 +43,14 @@
           v-model="text2"
           :rows="12"
           autoresize
-          class="w-1/2"
-          placeholder="输入第二段文本..."
+          placeholder="请输入对比文本..."
+          class="w-[400px]"
+          @input="autoCompare"
         />
       </div>
     </div>
 
+    <!-- ✅ 操作按钮 -->
     <div class="actions">
       <UButton
         size="xl"
@@ -70,29 +73,37 @@
       </UButton>
     </div>
 
-    <!-- Diff 结果 -->
+    <!-- ✅ 差异提示 -->
     <div v-if="diffHtml" class="legend">
       <span class="added">绿色 = 新增</span>
       <span class="removed ml-4">红色 = 删除</span>
     </div>
 
+    <!-- ✅ 结果展示 -->
     <div v-if="diffHtml" class="diff-result" v-html="diffHtml"></div>
+
+    <!-- ✅ 空状态 -->
+    <p v-else class="empty-tip text-gray-500 mt-6">
+      请在上方输入两段文本后点击“开始对比”
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, nextTick } from "vue";
 import { diffWordsWithSpace } from "diff";
 import { escape } from "html-escaper";
-import { nextTick } from "vue";
+import { useDebounceFn } from "@vueuse/core";
 
 const text1 = ref("");
 const text2 = ref("");
 const diffHtml = ref("");
 const isLoading = ref(false);
 
+/** 执行差异比较 */
 async function doDiff() {
   if (!text1.value && !text2.value) {
-    diffHtml.value = "<i style='color:#999'>请先输入文本</i>";
+    diffHtml.value = `<i style="color:#999">请先输入文本</i>`;
     return;
   }
 
@@ -104,12 +115,8 @@ async function doDiff() {
   diffHtml.value = diff
     .map((part) => {
       const val = escape(part.value);
-      if (part.added) {
-        return `<span class="added">+${val}</span>`;
-      }
-      if (part.removed) {
-        return `<span class="removed">-${val}</span>`;
-      }
+      if (part.added) return `<span class="added">+${val}</span>`;
+      if (part.removed) return `<span class="removed">-${val}</span>`;
       return `<span>${val}</span>`;
     })
     .join("");
@@ -117,11 +124,21 @@ async function doDiff() {
   isLoading.value = false;
 }
 
+/** 重置输入 */
 function reset() {
   text1.value = "";
   text2.value = "";
   diffHtml.value = "";
 }
+
+/** 防抖实时对比 */
+const autoCompare = useDebounceFn(() => {
+  if (text1.value || text2.value) {
+    doDiff();
+  } else {
+    diffHtml.value = "";
+  }
+}, 600);
 </script>
 
 <style scoped>
@@ -143,7 +160,6 @@ function reset() {
   margin-bottom: 1.5rem;
 }
 
-/* ✅ SEO内容说明样式 */
 .info-block {
   margin-top: 1.5rem;
   padding: 1.2rem;
@@ -172,9 +188,11 @@ function reset() {
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1rem;
   margin-top: 1.4rem;
+  text-align: left;
 }
 .text-column h3 {
   font-weight: 600;
+  margin-bottom: 0.3rem;
 }
 
 .actions {
@@ -189,23 +207,16 @@ function reset() {
   font-size: 0.85rem;
 }
 
-.added {
-}
-
-.removed {
-}
-
 :deep(.added) {
-  background-color: rgba(34, 197, 94, 0.4); /* 更醒目的绿色 */
+  background-color: rgba(34, 197, 94, 0.35);
   color: #065f46;
   border-radius: 4px;
   padding: 2px 4px;
   margin: 0 1px;
   display: inline-block;
 }
-
 :deep(.removed) {
-  background-color: rgba(239, 68, 68, 0.4); /* 更醒目的红色 */
+  background-color: rgba(239, 68, 68, 0.35);
   color: #991b1b;
   border-radius: 4px;
   padding: 2px 4px;
@@ -222,5 +233,9 @@ function reset() {
   border-radius: 8px;
   overflow-x: auto;
   white-space: pre-wrap;
+}
+
+.empty-tip {
+  font-size: 0.95rem;
 }
 </style>

@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/icon",
     "@nuxtjs/sitemap",
+    "@vueuse/nuxt",
   ],
   css: ["~/assets/css/main.css"],
   ui: {

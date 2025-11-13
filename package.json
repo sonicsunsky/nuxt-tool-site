@@ -16,7 +16,6 @@
     "@nuxt/ui": "^4.0.1",
     "@pinia/nuxt": "^0.11.2",
     "@upstash/redis": "^1.35.6",
-    "@vueuse/core": "^14.0.0",
     "dayjs": "^1.11.18",
     "diff": "^8.0.2",
     "geoip-lite": "^1.4.10",
@@ -30,9 +29,12 @@
   },
   "devDependencies": {
     "@iconify-json/ant-design": "^1.2.5",
+    "@iconify-json/heroicons": "^1.2.3",
     "@iconify-json/lucide": "^1.2.70",
     "@iconify-json/mdi": "^1.2.3",
     "@nuxt/icon": "^2.1.0",
-    "@nuxtjs/sitemap": "^7.4.7"
+    "@nuxtjs/sitemap": "^7.4.7",
+    "@vueuse/core": "^14.0.0",
+    "@vueuse/nuxt": "^14.0.0"
   }
 }
