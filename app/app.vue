@@ -9,7 +9,13 @@
 })
   */
 useHead({
-  meta: [{ name: "viewport", content: "width=device-width, initial-scale=1" }],
+  meta: [
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    {
+      name: "google-site-verification",
+      content: "VVURLevU6chuZj1sH8v1ahZRc2bOibqbSQvbtFvSHcU",
+    },
+  ],
   link: [{ rel: "icon", href: "/favicon.ico" }],
   htmlAttrs: {
     lang: "en",
