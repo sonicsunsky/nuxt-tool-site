@@ -44,14 +44,14 @@
       </div>
 
       <!-- ✅ 新增底部导航链接 -->
-      <nav
+      <!-- <nav
         class="flex flex-wrap justify-center gap-6 mt-2 text-sm text-gray-600"
       >
         <NuxtLink to="/about" class="hover:text-gray-900">关于我们</NuxtLink>
         <NuxtLink to="/contact" class="hover:text-gray-900">联系我们</NuxtLink>
         <NuxtLink to="/privacy" class="hover:text-gray-900">隐私政策</NuxtLink>
         <NuxtLink to="/terms" class="hover:text-gray-900">使用条款</NuxtLink>
-      </nav>
+      </nav> -->
 
       <!-- QR Teleport 保持原样 -->
       <Teleport to="body">
@@ -96,9 +96,9 @@
         </div>
       </Teleport>
 
-      <p class="text-sm text-gray-500 mt-4">
+      <!-- <p class="text-sm text-gray-500 mt-4">
         © {{ new Date().getFullYear() }} 开发者工具箱
-      </p>
+      </p> -->
     </div>
   </footer>
 </template>
