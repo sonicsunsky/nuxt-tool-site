@@ -325,5 +325,27 @@ export const useToolsSeoMap = () => {
         canonical: `${siteUrl}/en/tools/diff`,
       },
     },
+
+    //图片压缩
+    "image-compressor": {
+      zh: {
+        title: "图片压缩工具 - 在线图片压缩",
+        description: "压缩图片文件，支持 JPEG、PNG、GIF 等格式。",
+        keywords: "图片压缩,在线压缩,图片压缩工具",
+        ogTitle: "在线图片压缩工具",
+        ogDescription: "压缩图片文件，支持 JPEG、PNG、GIF 等格式。",
+        canonical: `${siteUrl}/tools/image-compressor`,
+      },
+      en: {
+        title: "Image Compressor - Online Tool",
+        description:
+          "Compress images online with support for JPEG, PNG, GIF, etc.",
+        keywords: "image compress,online compress,image compressor",
+        ogTitle: "Online Image Compressor",
+        ogDescription:
+          "Compress images online with support for JPEG, PNG, GIF, etc.",
+        canonical: `${siteUrl}/en/tools/image-compressor`,
+      },
+    },
   };
 };

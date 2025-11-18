@@ -202,6 +202,13 @@ const tools = [
     category: "data",
     keywords: "文本,代码,对比,diff",
   },
+  {
+    name: "图片压缩",
+    path: "/tools/image-compressor",
+    desc: "压缩图片文件，支持 JPEG、PNG、GIF 等格式",
+    category: "image",
+    keywords: "图片,压缩,图片压缩,文件",
+  },
 ];
 
 const filteredTools = computed(() => {
