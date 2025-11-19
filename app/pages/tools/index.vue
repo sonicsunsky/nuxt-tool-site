@@ -209,6 +209,13 @@ const tools = [
     category: "image",
     keywords: "图片,压缩,图片压缩,文件",
   },
+  {
+    name: "IP 查询",
+    path: "/tools/ip",
+    desc: "查询 IP 地址的详细信息，包括地理位置、运营商等",
+    category: "data",
+    keywords: "ip,查询,地理位置,运营商",
+  },
 ];
 
 const filteredTools = computed(() => {

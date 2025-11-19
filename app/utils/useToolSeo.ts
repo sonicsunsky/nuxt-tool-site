@@ -347,5 +347,26 @@ export const useToolsSeoMap = () => {
         canonical: `${siteUrl}/en/tools/image-compressor`,
       },
     },
+
+    //ip查询
+    ip: {
+      zh: {
+        title: "IP 查询工具 - 查询 IP 地址信息",
+        description: "查询 IP 地址的详细信息，包括地理位置、运营商等。",
+        keywords: "ip 查询,ip 地址,ip 信息",
+        ogTitle: "IP 查询工具",
+        ogDescription: "查询 IP 地址的详细信息。",
+        canonical: `${siteUrl}/tools/ip`,
+      },
+      en: {
+        title: "IP Query Tool - Lookup IP Address Information",
+        description:
+          "Query detailed information about an IP address, including location and ISP.",
+        keywords: "ip query,ip address,ip information",
+        ogTitle: "IP Query Tool",
+        ogDescription: "Query detailed information about an IP address.",
+        canonical: `${siteUrl}/en/tools/ip`,
+      },
+    },
   };
 };
