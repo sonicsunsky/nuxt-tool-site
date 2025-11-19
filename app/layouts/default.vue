@@ -44,7 +44,6 @@
     </main>
 
     <Sponsors />
-    <AnalyticsTracker />
 
     <footer
       class="mt-auto py-6 border-t bg-gray-100 text-center text-sm text-gray-600"
