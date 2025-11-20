@@ -368,5 +368,27 @@ export const useToolsSeoMap = () => {
         canonical: `${siteUrl}/en/tools/ip`,
       },
     },
+
+    //经纬度和地理位置
+    location: {
+      zh: {
+        title: "经纬度地理位置查询工具 - 根据经纬度查询地理位置",
+        description: "根据经纬度查询具体的地理位置信息。",
+        keywords: "经纬度,地理位置,查询",
+        ogTitle: "经纬度地理位置查询工具",
+        ogDescription: "根据经纬度查询具体的地理位置信息。",
+        canonical: `${siteUrl}/tools/location`,
+      },
+      en: {
+        title: "Location Query Tool - Lookup Location by Latitude & Longitude",
+        description:
+          "Query location details using latitude and longitude coordinates.",
+        keywords: "latitude longitude,location query,geolocation",
+        ogTitle: "Location Query Tool",
+        ogDescription:
+          "Query location details using latitude and longitude coordinates.",
+        canonical: `${siteUrl}/en/tools/location`,
+      },
+    },
   };
 };

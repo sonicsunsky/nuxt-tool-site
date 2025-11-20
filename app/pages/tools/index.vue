@@ -216,6 +216,14 @@ const tools = [
     category: "data",
     keywords: "ip,查询,地理位置,运营商",
   },
+  //经纬度地理位置查询
+  {
+    name: "经纬度地理位置查询",
+    path: "/tools/location",
+    desc: "根据经纬度查询具体的地理位置信息",
+    category: "data",
+    keywords: "经纬度,地理位置,查询",
+  },
 ];
 
 const filteredTools = computed(() => {
