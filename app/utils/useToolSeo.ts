@@ -390,5 +390,27 @@ export const useToolsSeoMap = () => {
         canonical: `${siteUrl}/en/tools/location`,
       },
     },
+
+    //pdf和图片互相转换工具
+    "pdf-converter": {
+      zh: {
+        title: "PDF 转换工具 - 将 PDF 转换为图片",
+        description: "将 PDF 文件转换为图片格式，支持批量转换。",
+        keywords: "pdf 转换,图片转换,批量转换",
+        ogTitle: "PDF 转换工具",
+        ogDescription: "将 PDF 文件转换为图片格式，支持批量转换。",
+        canonical: `${siteUrl}/tools/pdf-converter`,
+      },
+      en: {
+        title: "PDF Converter - Convert PDF to Images",
+        description:
+          "Convert PDF files to images with support for batch processing.",
+        keywords: "pdf convert,image convert,batch convert",
+        ogTitle: "PDF Converter",
+        ogDescription:
+          "Convert PDF files to images with support for batch processing.",
+        canonical: `${siteUrl}/en/tools/pdf-converter`,
+      },
+    },
   };
 };

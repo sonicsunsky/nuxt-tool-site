@@ -18,7 +18,7 @@
         icon="i-heroicons-arrow-right-circle"
         class="font-bold tracking-wider"
       >
-        立即探索全部 {{ hotTools.length + 4 }}+ 工具 →
+        立即探索全部 {{ hotTools.length + 10 }}+ 工具 →
       </UButton>
 
       <div

@@ -21,7 +21,20 @@
           <UCard class="mt-4">
             <div class="space-y-6">
               <div v-if="!pdfFile" class="animate-fade-in">
+                <div
+                  v-if="isProcessingFile"
+                  class="text-center py-12 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg"
+                >
+                  <UIcon
+                    name="i-heroicons-arrow-path"
+                    class="animate-spin w-10 h-10 mb-3 text-primary-500"
+                  />
+                  <p class="font-medium">正在解析 PDF 文件结构...</p>
+                  <p class="text-xs mt-1">大型文件可能需要几秒钟</p>
+                </div>
+
                 <UFileUpload
+                  v-else
                   v-model="rawPdfFiles"
                   accept="application/pdf"
                   :multiple="false"
@@ -29,6 +42,7 @@
                   icon="i-heroicons-document-text"
                   label="点击或拖拽 PDF 文件到这里"
                   description="支持任意大小的 PDF 文件，纯本地解析"
+                  @change="onPdfChange"
                 />
               </div>
 
@@ -67,7 +81,7 @@
                     >
                     <USelect
                       v-model="pdfOutputFormat"
-                      :options="['png', 'jpeg']"
+                      :items="['png', 'jpeg']"
                     />
                   </div>
                   <div class="flex-1">
@@ -76,7 +90,7 @@
                     >
                     <USelect
                       v-model="pdfScale"
-                      :options="[
+                      :items="[
                         { label: '1.5x (标准)', value: 1.5 },
                         { label: '3.0x (超清)', value: 3 },
                       ]"
@@ -125,6 +139,7 @@
                       ? '继续添加更多图片'
                       : '支持多选，JPG / PNG / WebP'
                   "
+                  @change="onImgChange"
                 />
               </div>
 
@@ -177,7 +192,7 @@
                       >
                       <USelect
                         v-model="pdfOrientation"
-                        :options="[
+                        :items="[
                           { label: '纵向 (Portrait)', value: 'p' },
                           { label: '横向 (Landscape)', value: 'l' },
                         ]"
@@ -190,7 +205,7 @@
                       >
                       <USelect
                         v-model="pdfMargin"
-                        :options="[
+                        :items="[
                           { label: '无边距', value: 0 },
                           { label: '小边距 (10mm)', value: 10 },
                           { label: '标准 (20mm)', value: 20 },
@@ -221,6 +236,9 @@
 import { jsPDF } from "jspdf";
 import JSZip from "jszip";
 
+// @ts-ignore
+import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+
 useHead({
   title: "PDF/图片转换工具 - 开发者工具箱",
   meta: [
@@ -231,7 +249,6 @@ useHead({
   ],
 });
 
-// ================= 配置 =================
 const items = [
   {
     label: "PDF 转 图片",
@@ -256,56 +273,86 @@ const formatBytes = (bytes: number, decimals = 2) => {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 };
 
+// =========================================
+// 通用工具：标准化文件输入
+// 处理 UFileUpload 返回值可能是 单个文件 或 文件数组 的情况
+// =========================================
+const normalizeFiles = (input: File | File[] | null | undefined): File[] => {
+  if (!input) return [];
+  if (Array.isArray(input)) return input;
+  return [input];
+};
+
 // ====================
 // Logic: PDF -> Image
 // ====================
-// rawPdfFiles 用于绑定 UFileUpload，它通常返回 File[] 或 FileList
-const rawPdfFiles = ref<File[] | null>(null);
+// 修改定义：允许 null, File, 或 File[]
+const rawPdfFiles = ref<File | File[] | null>(null);
 const pdfFile = ref<File | null>(null);
 const pdfPageCount = ref(0);
 const isConvertingPdf = ref(false);
+const isProcessingFile = ref(false);
 const currentConvertPage = ref(0);
 const pdfOutputFormat = ref("png");
 const pdfScale = ref(1.5);
 let pdfDoc: any = null;
 
-// 监听上传组件的变化
-watch(rawPdfFiles, async (newFiles) => {
-  if (newFiles && newFiles.length > 0) {
-    // 取第一个文件进行处理
-    const file = newFiles[0];
-    // 如果是文件对象（防御性编程）
-    if (file instanceof File) {
-      await loadPdf(file);
-    }
+const onPdfChange = async () => {
+  // 1. 使用 normalizeFiles 统一处理
+  const files = normalizeFiles(rawPdfFiles.value);
+
+  if (files.length > 0) {
+    const file = files[0];
+    isProcessingFile.value = true;
+    await loadPdf(file);
+    isProcessingFile.value = false;
+
+    // 解析完成后清空，防止UI一直显示上传的文件名（因为我们有自己的状态栏了）
+    rawPdfFiles.value = null;
   }
-});
+};
 
 const resetPdfState = () => {
   pdfFile.value = null;
-  rawPdfFiles.value = []; // 清空上传组件
+  rawPdfFiles.value = null;
   pdfPageCount.value = 0;
   pdfDoc = null;
+  isProcessingFile.value = false;
 };
 
 const initPdfWorker = async () => {
   const pdfjsLib = await import("pdfjs-dist");
-  const pdfjsVersion = pdfjsLib.version;
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsVersion}/pdf.worker.min.js`;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
   return pdfjsLib;
 };
 
 const loadPdf = async (file: File) => {
   try {
-    pdfFile.value = file;
     const arrayBuffer = await file.arrayBuffer();
     const pdfjsLib = await initPdfWorker();
-    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-    pdfDoc = await loadingTask.promise;
-    pdfPageCount.value = pdfDoc.numPages;
-  } catch (err) {
-    console.error(err);
-    alert("无法解析 PDF 文件，请确认文件未损坏且无密码");
+
+    const loadingTask = pdfjsLib.getDocument({
+      data: arrayBuffer,
+      cMapUrl:
+        "https://cdn.jsdelivr.net/npm/pdfjs-dist@" +
+        pdfjsLib.version +
+        "/cmaps/",
+      cMapPacked: true,
+    });
+
+    const doc = await loadingTask.promise;
+    pdfDoc = doc;
+    pdfPageCount.value = doc.numPages;
+    pdfFile.value = file;
+  } catch (err: any) {
+    console.error("PDF Load Error Detail:", err);
+    let msg = "无法解析 PDF 文件";
+    if (err.name === "PasswordException") {
+      msg = "该 PDF 文件受密码保护，请先移除密码";
+    } else if (err.name === "MissingPDFException") {
+      msg = "文件损坏或不是有效的 PDF";
+    }
+    alert(msg);
     resetPdfState();
   }
 };
@@ -335,10 +382,10 @@ const convertPdfToImages = async () => {
       const format =
         pdfOutputFormat.value === "png" ? "image/png" : "image/jpeg";
       const dataUrl = canvas.toDataURL(format, 0.85);
-
       const fileName = `page-${String(i).padStart(3, "0")}.${
         pdfOutputFormat.value
       }`;
+
       folder?.file(fileName, dataUrl.split(",")[1], { base64: true });
     }
 
@@ -349,7 +396,7 @@ const convertPdfToImages = async () => {
     link.click();
   } catch (err) {
     console.error(err);
-    alert("转换出错");
+    alert("转换出错，请检查控制台日志");
   } finally {
     isConvertingPdf.value = false;
   }
@@ -358,29 +405,28 @@ const convertPdfToImages = async () => {
 // ====================
 // Logic: Image -> PDF
 // ====================
-const rawImgFiles = ref<File[] | null>(null); // 绑定上传组件
+// 修改定义：允许 File[] 或 null（根据组件实现可能不同）
+const rawImgFiles = ref<File | File[] | null>([]);
 const selectedImages = ref<{ file: File; url: string }[]>([]);
 const isGeneratingPdf = ref(false);
 const pdfOrientation = ref<"p" | "l">("p");
 const pdfMargin = ref(10);
 
-// 监听图片上传，实现“追加”逻辑
-watch(rawImgFiles, (newFiles) => {
-  if (newFiles && newFiles.length > 0) {
-    Array.from(newFiles).forEach((file) => {
-      // 过滤非图片文件（虽然 UFileUpload accept 限制了，但双重保险）
+const onImgChange = () => {
+  // 1. 使用 normalizeFiles 统一处理
+  const files = normalizeFiles(rawImgFiles.value);
+
+  if (files.length > 0) {
+    files.forEach((file) => {
       if (file.type.startsWith("image/")) {
         const url = URL.createObjectURL(file);
         selectedImages.value.push({ file, url });
       }
     });
-
-    // 【关键】：读取完后立即清空 rawImgFiles
-    // 这样 UFileUpload 组件会重置，用户可以再次点击它来添加新图片
-    // 同时也避免了 UFileUpload UI 上堆积显示文件名，因为我们自己做了网格预览
+    // 立即清空，允许连续添加
     rawImgFiles.value = [];
   }
-});
+};
 
 const removeImage = (index: number) => {
   selectedImages.value.splice(index, 1);

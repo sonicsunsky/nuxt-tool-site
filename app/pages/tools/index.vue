@@ -224,6 +224,14 @@ const tools = [
     category: "data",
     keywords: "经纬度,地理位置,查询",
   },
+  //pdf和图片互相转换工具
+  {
+    name: "PDF 转换工具",
+    path: "/tools/pdf-converter",
+    desc: "将 PDF 文件转换为图片格式，支持批量转换",
+    category: "dev",
+    keywords: "pdf,转换,图片,批量转换",
+  },
 ];
 
 const filteredTools = computed(() => {
